@@ -1,0 +1,115 @@
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { toast } from "sonner";
+import { approvalStepsApi, departmentWorkflowsApi, userApprovalRolesApi } from "@/api/workflowConfig.api";
+import { qk } from "@/lib/queryClient";
+import type {
+  ApiError,
+  CreateApprovalStepRequest,
+  CreateDepartmentWorkflowRequest,
+  CreateUserApprovalRoleRequest,
+  UpdateUserApprovalRoleRequest,
+} from "@/types/dto";
+
+// ---- Approval Steps (con của 1 workflow) ----
+export function useApprovalStepsQuery(workflowId: number | null) {
+  return useQuery({
+    queryKey: qk.approvalSteps(workflowId ?? 0),
+    queryFn: () => approvalStepsApi.getByWorkflowId(workflowId as number),
+    enabled: workflowId !== null,
+  });
+}
+
+export function useCreateApprovalStep() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (payload: CreateApprovalStepRequest) => approvalStepsApi.create(payload),
+    onSuccess: (_, variables) => {
+      qc.invalidateQueries({ queryKey: qk.approvalSteps(variables.workflowId) });
+      toast.success("Đã thêm bước duyệt");
+    },
+    onError: (err: ApiError) => toast.error(err.message),
+  });
+}
+
+export function useRemoveApprovalStep() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: ({ id }: { id: number; workflowId: number }) => approvalStepsApi.remove(id),
+    onSuccess: (_, variables) => {
+      qc.invalidateQueries({ queryKey: qk.approvalSteps(variables.workflowId) });
+      toast.success("Đã xóa bước duyệt");
+    },
+    onError: (err: ApiError) => toast.error(err.message),
+  });
+}
+
+// ---- Department <-> Workflow ----
+export function useDepartmentWorkflowsQuery() {
+  return useQuery({ queryKey: qk.departmentWorkflows, queryFn: departmentWorkflowsApi.getAll });
+}
+
+export function useCreateDepartmentWorkflow() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (payload: CreateDepartmentWorkflowRequest) => departmentWorkflowsApi.create(payload),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: qk.departmentWorkflows });
+      toast.success("Đã gán quy trình cho phòng ban");
+    },
+    onError: (err: ApiError) => toast.error(err.message),
+  });
+}
+
+export function useRemoveDepartmentWorkflow() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (id: number) => departmentWorkflowsApi.remove(id),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: qk.departmentWorkflows });
+      toast.success("Đã gỡ gán");
+    },
+    onError: (err: ApiError) => toast.error(err.message),
+  });
+}
+
+// ---- User <-> Approval Role ----
+export function useUserApprovalRolesQuery() {
+  return useQuery({ queryKey: qk.userApprovalRoles, queryFn: userApprovalRolesApi.getAll });
+}
+
+export function useCreateUserApprovalRole() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (payload: CreateUserApprovalRoleRequest) => userApprovalRolesApi.create(payload),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: qk.userApprovalRoles });
+      toast.success("Phân quyền duyệt thành công");
+    },
+    onError: (err: ApiError) => toast.error(err.message),
+  });
+}
+
+export function useUpdateUserApprovalRole() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: ({ id, payload }: { id: number; payload: UpdateUserApprovalRoleRequest }) =>
+      userApprovalRolesApi.update(id, payload),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: qk.userApprovalRoles });
+      toast.success("Cập nhật thành công");
+    },
+    onError: (err: ApiError) => toast.error(err.message),
+  });
+}
+
+export function useRemoveUserApprovalRole() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (id: number) => userApprovalRolesApi.remove(id),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: qk.userApprovalRoles });
+      toast.success("Đã gỡ phân quyền");
+    },
+    onError: (err: ApiError) => toast.error(err.message),
+  });
+}
