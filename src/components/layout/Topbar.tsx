@@ -1,15 +1,16 @@
 import { LogOut } from "lucide-react";
-import { useNavigate } from "react-router-dom";
 import { useAuthStore } from "@/store/authStore";
 import { NotificationBell } from "./NotificationBell";
 
 export function Topbar() {
   const logout = useAuthStore((s) => s.logout);
-  const navigate = useNavigate();
 
   async function handleLogout() {
     await logout();
-    navigate("/login", { replace: true });
+    // Tải lại toàn bộ trang (thay vì chỉ điều hướng SPA) để đảm bảo không
+    // còn bất kỳ state nào trong bộ nhớ JS (role, cache, closure cũ...)
+    // sót lại từ phiên trước — "đăng xuất" phải là một khởi động sạch hoàn toàn.
+    window.location.href = "/login";
   }
 
   return (

@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import { authApi } from "@/api/auth.api";
 import { userFromToken } from "@/lib/jwt";
+import { queryClient } from "@/lib/queryClient";
 import type { AuthUser } from "@/types/dto";
 
 const STORAGE_USER_KEY = "ams_user";
@@ -54,6 +55,10 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   clearSession: () => {
     localStorage.removeItem(STORAGE_USER_KEY);
     localStorage.removeItem(STORAGE_REFRESH_KEY);
+    // Xóa sạch cache TanStack Query — tránh dữ liệu (hoặc quyền hạn) của
+    // phiên trước còn sót lại khi có người đăng nhập tiếp theo trên cùng
+    // trình duyệt, hoặc khi role vừa được phát hiện lại đúng sau khi sửa lỗi.
+    queryClient.clear();
     set({ user: null });
   },
 
