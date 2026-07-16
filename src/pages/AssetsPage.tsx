@@ -329,14 +329,14 @@ export default function AssetsPage() {
                             <button
                               onClick={() => openEdit(a)}
                               type="button"
-                              className="rounded-md p-1.5 text-slate-400 hover:bg-slate-50 hover:text-slate-700"
+                              className="rounded-full p-1.5 text-slate-400 transition-colors duration-150 hover:bg-slate-100 hover:text-slate-700"
                             >
                               <Pencil size={15} />
                             </button>
                             <button
                               onClick={() => setDeleteTarget(a)}
                               type="button"
-                              className="rounded-md p-1.5 text-slate-400 hover:bg-red-50 hover:text-red-500"
+                              className="rounded-full p-1.5 text-slate-400 transition-colors duration-150 hover:bg-red-50 hover:text-red-500"
                             >
                               <Trash2 size={15} />
                             </button>

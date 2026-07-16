@@ -79,7 +79,7 @@ export default function AdminAssignmentsPage() {
                     <td className="text-right">
                       <button
                         onClick={() => setDetailId(a.id)}
-                        className="rounded-md p-1.5 text-slate-400 hover:bg-slate-50 hover:text-slate-700"
+                        className="rounded-full p-1.5 text-slate-400 transition-colors duration-150 hover:bg-slate-100 hover:text-slate-700"
                         title="Xem chi tiết"
                         type="button"
                       >

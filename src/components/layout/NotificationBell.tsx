@@ -35,7 +35,7 @@ export function NotificationBell() {
     <div className="relative" ref={ref}>
       <button
         onClick={() => setOpen((o) => !o)}
-        className="relative flex h-9 w-9 items-center justify-center rounded-lg text-slate-500 hover:bg-slate-50 hover:text-slate-800"
+        className="relative flex h-9 w-9 items-center justify-center rounded-full text-slate-500 transition-colors duration-150 hover:bg-slate-100 hover:text-slate-800"
         type="button"
       >
         <Bell size={18} />
@@ -47,7 +47,7 @@ export function NotificationBell() {
       </button>
 
       {open && (
-        <div className="absolute right-0 z-40 mt-2 w-80 animate-[popup_.15s_ease-out] rounded-xl border border-slate-100 bg-white shadow-pop">
+        <div className="absolute right-0 z-40 mt-2 w-80 animate-[popup_.18s_cubic-bezier(0.4,0,0.2,1)] rounded-2xl border border-slate-200/70 bg-white shadow-pop">
           <div className="flex items-center justify-between border-b border-slate-100 px-4 py-3">
             <p className="text-sm font-semibold text-slate-800">Thông báo</p>
             {unreadCount > 0 && (
@@ -70,7 +70,7 @@ export function NotificationBell() {
                   onClick={() => !n.isRead && markAsRead.mutate(n.id)}
                   type="button"
                   className={cn(
-                    "flex w-full flex-col gap-1 border-b border-slate-50 px-4 py-3 text-left text-sm hover:bg-slate-50",
+                    "flex w-full flex-col gap-1 border-b border-slate-50 px-4 py-3 text-left text-sm transition-colors duration-150 hover:bg-slate-50",
                     !n.isRead && "bg-indigo-50/60"
                   )}
                 >

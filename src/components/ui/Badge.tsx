@@ -3,22 +3,21 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/cn";
 import type { BadgeColor } from "@/types/enums";
 
-const badgeVariants = cva(
-  "inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-semibold ring-1 ring-inset",
-  {
-    variants: {
-      color: {
-        emerald: "bg-emerald-50 text-emerald-700 ring-emerald-100",
-        amber: "bg-amber-50 text-amber-700 ring-amber-100",
-        indigo: "bg-indigo-50 text-indigo-700 ring-indigo-100",
-        red: "bg-red-50 text-red-600 ring-red-100",
-        slate: "bg-slate-100 text-slate-700 ring-slate-200",
-        gray: "bg-gray-100 text-gray-600 ring-gray-200",
-      } satisfies Record<BadgeColor, string>,
-    },
-    defaultVariants: { color: "gray" },
-  }
-);
+// Mỗi trạng thái 1 màu riêng (nền nhạt + chữ đậm cùng tông) — giúp quét mắt
+// nhanh trạng thái trong bảng dài mà không cần đọc từng chữ.
+const badgeVariants = cva("inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-semibold", {
+  variants: {
+    color: {
+      emerald: "bg-emerald-50 text-emerald-700 ring-1 ring-inset ring-emerald-100",
+      indigo: "bg-indigo-50 text-indigo-700 ring-1 ring-inset ring-indigo-100",
+      amber: "bg-amber-50 text-amber-800 ring-1 ring-inset ring-amber-200",
+      red: "bg-red-50 text-red-700 ring-1 ring-inset ring-red-100",
+      slate: "bg-slate-100 text-slate-600 ring-1 ring-inset ring-slate-200",
+      gray: "bg-slate-100 text-slate-600 ring-1 ring-inset ring-slate-200",
+    } satisfies Record<BadgeColor, string>,
+  },
+  defaultVariants: { color: "gray" },
+});
 
 interface BadgeProps extends VariantProps<typeof badgeVariants> {
   children: ReactNode;

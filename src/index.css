@@ -4,16 +4,31 @@
 
 @layer base {
   html {
-    font-family: "Inter", sans-serif;
+    font-family:
+      -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Helvetica, Arial,
+      sans-serif;
+    scroll-behavior: smooth;
+    /* Apple luôn bật kerning/ligature và hint chữ mượt — khác biệt rõ ràng
+       so với render mặc định của trình duyệt trên nền chữ dày. */
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
   body {
-    @apply text-slate-800 antialiased;
+    @apply text-slate-900 antialiased;
+    letter-spacing: -0.011em; /* độ ghì chữ (tracking) âm nhẹ — đặc trưng typography của Apple */
   }
   ::selection {
     @apply bg-indigo-200 text-slate-900;
   }
   *:focus-visible {
     outline: none;
+  }
+  /* Mượt hoá mọi chuyển màu/bóng/viền mặc định trong toàn app — chỉ cần
+     thêm class transition-* ở bất kỳ đâu là tự động dùng easing "mượt" này
+     thay vì easing tuyến tính cứng của trình duyệt. */
+  * {
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   }
 }
 
@@ -47,14 +62,43 @@
   }
 }
 
+@keyframes slidein {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+/* Áp cho khối nội dung chính mỗi khi chuyển trang — tạo cảm giác mượt,
+   không bị "giật" nội dung xuất hiện đột ngột. */
+@keyframes page-enter {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.page-enter {
+  animation: page-enter 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
 /* thanh cuộn mảnh, hợp tông slate */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
 }
 ::-webkit-scrollbar-thumb {
-  background: #cbd5e1;
+  background: #d2d2d7;
   border-radius: 8px;
+  transition: background 0.15s;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #aeaeb2;
 }
 ::-webkit-scrollbar-track {
   background: transparent;

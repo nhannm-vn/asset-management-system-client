@@ -1,3 +1,4 @@
+import type { LucideIcon } from "lucide-react";
 import { Boxes, ClipboardList, Repeat, PackageCheck } from "lucide-react";
 import {
   PieChart,
@@ -16,29 +17,36 @@ import { PageHeader, Spinner } from "@/components/ui/DataDisplay";
 import { useDashboardSummaryQuery } from "@/hooks/useAdmin";
 
 // Khớp đúng ngữ nghĩa màu trạng thái dùng trong Badge (xem types/enums.ts)
-const ASSET_COLORS = ["#10B981", "#6366F1", "#F59E0B", "#CBD5E1"]; // Sẵn sàng, Đang dùng, Bảo trì, Khác
-const REQUEST_COLORS = ["#F59E0B", "#10B981", "#EF4444", "#CBD5E1"]; // Chờ duyệt, Đã duyệt, Từ chối, Đã hủy
+const ASSET_COLORS = ["#10B981", "#4F46E5", "#F59E0B", "#C3C8D1"]; // Sẵn sàng, Đang dùng, Bảo trì, Khác
+const REQUEST_COLORS = ["#F59E0B", "#10B981", "#F43F5E", "#C3C8D1"]; // Chờ duyệt, Đã duyệt, Từ chối, Đã hủy
 
-interface ManifestItemProps {
+const STAT_THEME = {
+  indigo: { icon: "bg-indigo-600" },
+  amber: { icon: "bg-amber-500" },
+  emerald: { icon: "bg-emerald-500" },
+  slate: { icon: "bg-slate-800" },
+} as const;
+
+interface StatCardProps {
   label: string;
   value: number;
-  icon: typeof Boxes;
-  accent?: "indigo" | "emerald";
+  icon: LucideIcon;
+  theme: keyof typeof STAT_THEME;
 }
 
-function ManifestItem({ label, value, icon: Icon, accent }: ManifestItemProps) {
-  const accentClass =
-    accent === "indigo" ? "text-indigo-500" : accent === "emerald" ? "text-emerald-500" : "text-slate-400";
+function StatCard({ label, value, icon: Icon, theme }: StatCardProps) {
   return (
-    <div className="flex flex-1 items-center gap-3.5 px-6 py-5 first:pl-0 last:pr-0">
-      <Icon size={17} className={accentClass} strokeWidth={2.25} />
+    <Card interactive className="flex items-center gap-4">
+      <div
+        className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl ${STAT_THEME[theme].icon}`}
+      >
+        <Icon size={19} className="text-white" strokeWidth={2.25} />
+      </div>
       <div>
-        <p className="font-mono text-[26px] font-semibold leading-none tracking-tight text-slate-900">
-          {value}
-        </p>
+        <p className="text-2xl font-semibold leading-none tracking-tight text-slate-900">{value}</p>
         <p className="mt-1.5 text-xs text-slate-500">{label}</p>
       </div>
-    </div>
+    </Card>
   );
 }
 
@@ -76,27 +84,26 @@ export default function DashboardPage() {
         description="Số liệu vận hành tài sản theo thời gian thực."
       />
 
-      {/* Dải "manifest" — trình bày như 1 dòng sổ kiểm kê, không phải 4 thẻ rời rạc */}
-      <Card padded={false} className="mb-5 flex flex-wrap divide-x divide-slate-100 px-6">
-        <ManifestItem label="Tổng số tài sản" value={summary.totalAssets} icon={Boxes} />
-        <ManifestItem
+      <div className="mb-5 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <StatCard label="Tổng số tài sản" value={summary.totalAssets} icon={Boxes} theme="slate" />
+        <StatCard
           label="Yêu cầu chờ duyệt"
           value={summary.pendingRequests}
           icon={ClipboardList}
-          accent="indigo"
+          theme="amber"
         />
-        <ManifestItem
-          label="Đang bàn giao"
-          value={summary.activeAssignments}
-          icon={Repeat}
-          accent="emerald"
+        <StatCard label="Đang bàn giao" value={summary.activeAssignments} icon={Repeat} theme="indigo" />
+        <StatCard
+          label="Đã hoàn trả"
+          value={summary.returnedAssignments}
+          icon={PackageCheck}
+          theme="emerald"
         />
-        <ManifestItem label="Đã hoàn trả" value={summary.returnedAssignments} icon={PackageCheck} />
-      </Card>
+      </div>
 
       <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
-        <Card>
-          <p className="mb-1 font-mono text-[11px] uppercase tracking-widest text-indigo-600">Tài sản</p>
+        <Card interactive>
+          <p className="mb-1 text-[11px] font-semibold uppercase tracking-widest text-indigo-500">Tài sản</p>
           <h3 className="mb-4 text-base font-semibold text-slate-900">Phân bổ theo trạng thái</h3>
           <div className="h-64">
             <ResponsiveContainer width="100%" height="100%">
@@ -107,13 +114,24 @@ export default function DashboardPage() {
                   nameKey="name"
                   innerRadius={55}
                   outerRadius={85}
-                  paddingAngle={2}
+                  paddingAngle={3}
                 >
                   {assetData.map((_, i) => (
-                    <Cell key={i} fill={ASSET_COLORS[i % ASSET_COLORS.length]} />
+                    <Cell
+                      key={i}
+                      fill={ASSET_COLORS[i % ASSET_COLORS.length]}
+                      stroke="white"
+                      strokeWidth={2}
+                    />
                   ))}
                 </Pie>
-                <Tooltip />
+                <Tooltip
+                  contentStyle={{
+                    borderRadius: 12,
+                    border: "1px solid #EEF0F3",
+                    boxShadow: "0 8px 30px -8px rgba(21,23,27,0.12)",
+                  }}
+                />
               </PieChart>
             </ResponsiveContainer>
           </div>
@@ -130,27 +148,34 @@ export default function DashboardPage() {
           </div>
         </Card>
 
-        <Card>
-          <p className="mb-1 font-mono text-[11px] uppercase tracking-widest text-indigo-600">Yêu cầu</p>
+        <Card interactive>
+          <p className="mb-1 text-[11px] font-semibold uppercase tracking-widest text-indigo-500">Yêu cầu</p>
           <h3 className="mb-4 text-base font-semibold text-slate-900">Yêu cầu mượn theo trạng thái</h3>
           <div className="h-64">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={requestData}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#F1F5F9" vertical={false} />
+                <CartesianGrid strokeDasharray="3 3" stroke="#EEF0F3" vertical={false} />
                 <XAxis
                   dataKey="name"
-                  tick={{ fontSize: 12, fill: "#64748B" }}
+                  tick={{ fontSize: 12, fill: "#6C7480" }}
                   axisLine={false}
                   tickLine={false}
                 />
                 <YAxis
                   allowDecimals={false}
-                  tick={{ fontSize: 12, fill: "#64748B" }}
+                  tick={{ fontSize: 12, fill: "#6C7480" }}
                   axisLine={false}
                   tickLine={false}
                 />
-                <Tooltip cursor={{ fill: "#F8FAFC" }} />
-                <Bar dataKey="value" radius={[6, 6, 0, 0]}>
+                <Tooltip
+                  cursor={{ fill: "#F8FAFC" }}
+                  contentStyle={{
+                    borderRadius: 12,
+                    border: "1px solid #EEF0F3",
+                    boxShadow: "0 8px 30px -8px rgba(21,23,27,0.12)",
+                  }}
+                />
+                <Bar dataKey="value" radius={[6, 6, 0, 0]} animationDuration={600}>
                   {requestData.map((_, i) => (
                     <Cell key={i} fill={REQUEST_COLORS[i % REQUEST_COLORS.length]} />
                   ))}

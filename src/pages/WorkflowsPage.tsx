@@ -166,7 +166,7 @@ export default function WorkflowsPage() {
                   <div className="flex shrink-0 items-center gap-1">
                     <span
                       onClick={(e) => openEdit(wf, e)}
-                      className="rounded-md p-1.5 text-slate-400 hover:bg-slate-100 hover:text-slate-700"
+                      className="rounded-full p-1.5 text-slate-400 hover:bg-slate-100 hover:text-slate-700"
                     >
                       <Pencil size={14} />
                     </span>
@@ -175,7 +175,7 @@ export default function WorkflowsPage() {
                         e.stopPropagation();
                         setDeleteTarget(wf);
                       }}
-                      className="rounded-md p-1.5 text-slate-400 hover:bg-red-50 hover:text-red-500"
+                      className="rounded-full p-1.5 text-slate-400 transition-colors duration-150 hover:bg-red-50 hover:text-red-500"
                     >
                       <Trash2 size={14} />
                     </span>
@@ -244,7 +244,7 @@ export default function WorkflowsPage() {
                       </div>
                       <button
                         onClick={() => removeStep.mutate({ id: s.id, workflowId: selected.id })}
-                        className="rounded-md p-1.5 text-slate-400 hover:bg-red-50 hover:text-red-500"
+                        className="rounded-full p-1.5 text-slate-400 transition-colors duration-150 hover:bg-red-50 hover:text-red-500"
                         type="button"
                       >
                         <Trash2 size={14} />

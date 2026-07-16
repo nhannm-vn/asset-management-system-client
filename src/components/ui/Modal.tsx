@@ -35,28 +35,28 @@ export function Modal({ open, onClose, title, children, footer, size = "md" }: M
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
       <div
-        className="absolute inset-0 animate-[fadein_.15s_ease-out] bg-slate-950/50 backdrop-blur-[2px]"
+        className="absolute inset-0 animate-[fadein_.2s_cubic-bezier(0.4,0,0.2,1)] bg-slate-900/30 backdrop-blur-sm"
         onClick={onClose}
       />
       <div
         className={cn(
-          "relative w-full animate-[popup_.18s_ease-out] rounded-xl bg-white shadow-pop",
+          "relative w-full animate-[popup_.22s_cubic-bezier(0.4,0,0.2,1)] rounded-2xl bg-white shadow-pop",
           WIDTHS[size]
         )}
       >
-        <div className="flex items-center justify-between border-b border-slate-100 px-5 py-4">
-          <h3 className="text-base font-semibold text-slate-900">{title}</h3>
+        <div className="flex items-center justify-between border-b border-slate-100 px-6 py-4">
+          <h3 className="text-[17px] font-semibold text-slate-900">{title}</h3>
           <button
             onClick={onClose}
-            className="rounded-md p-1 text-slate-400 hover:bg-slate-50 hover:text-slate-700"
+            className="flex h-7 w-7 items-center justify-center rounded-full bg-slate-100 text-slate-500 transition-colors hover:bg-slate-200 hover:text-slate-700"
             type="button"
           >
-            <X size={18} />
+            <X size={15} />
           </button>
         </div>
-        <div className="max-h-[70vh] overflow-y-auto px-5 py-4">{children}</div>
+        <div className="max-h-[70vh] overflow-y-auto px-6 py-5">{children}</div>
         {footer && (
-          <div className="flex items-center justify-end gap-2 border-t border-slate-100 px-5 py-3.5">
+          <div className="flex items-center justify-end gap-2.5 border-t border-slate-100 px-6 py-4">
             {footer}
           </div>
         )}

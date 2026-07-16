@@ -126,7 +126,7 @@ export default function DepartmentWorkflowsPage() {
                   <td className="text-right">
                     <button
                       onClick={() => setDeleteTarget(it)}
-                      className="rounded-md p-1.5 text-slate-400 hover:bg-red-50 hover:text-red-500"
+                      className="rounded-full p-1.5 text-slate-400 transition-colors duration-150 hover:bg-red-50 hover:text-red-500"
                       type="button"
                     >
                       <Trash2 size={15} />

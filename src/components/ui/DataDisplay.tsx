@@ -3,8 +3,11 @@ import { Inbox, type LucideIcon } from "lucide-react";
 import { cn } from "@/lib/cn";
 
 export function Table({ children, className }: { children: ReactNode; className?: string }) {
+  // Table luôn nằm trong 1 <Card padded={false} className="overflow-hidden">
+  // nên KHÔNG tự vẽ viền/bo góc riêng ở đây — tránh viền lồng viền, để Card
+  // cha là nguồn duy nhất quyết định đường viền ngoài cùng.
   return (
-    <div className="overflow-x-auto rounded-xl border border-slate-100">
+    <div className="overflow-x-auto">
       <table className={cn("w-full text-sm", className)}>{children}</table>
     </div>
   );
@@ -20,7 +23,7 @@ export function Thead({ children }: { children: ReactNode }) {
 
 export function Tbody({ children }: { children: ReactNode }) {
   return (
-    <tbody className="divide-y divide-slate-100 bg-white [&>tr:hover]:bg-slate-50/60 [&>tr>td]:px-4 [&>tr>td]:py-3.5">
+    <tbody className="divide-y divide-slate-100 bg-white [&>tr:hover]:bg-indigo-50/40 [&>tr>td]:px-4 [&>tr>td]:py-3.5 [&>tr]:transition-colors [&>tr]:duration-150">
       {children}
     </tbody>
   );
@@ -49,7 +52,7 @@ export function TableSkeleton({ rows = 5, cols = 4 }: { rows?: number; cols?: nu
 export function Spinner({ label = "Đang tải…", className }: { label?: string; className?: string }) {
   return (
     <div className={cn("flex items-center justify-center gap-2 py-14 text-slate-400", className)}>
-      <div className="h-4 w-4 animate-spin rounded-full border-2 border-slate-200 border-t-slate-500" />
+      <div className="h-4 w-4 animate-spin rounded-full border-2 border-slate-200 border-t-indigo-500" />
       <span className="text-sm">{label}</span>
     </div>
   );
@@ -69,13 +72,19 @@ export function EmptyState({
   icon: Icon = Inbox,
 }: EmptyStateProps) {
   return (
-    <div className="flex flex-col items-center justify-center gap-2 py-16 text-center">
-      <div className="mb-1 flex h-11 w-11 items-center justify-center rounded-full bg-slate-50 text-slate-300">
-        <Icon size={20} />
+    <div className="flex flex-col items-center justify-center gap-3 py-16 text-center">
+      {/* Khung "khay trống" cách điệu — viền đứt nét + icon nổi ở giữa, tạo
+          cảm giác được thiết kế thay vì chỉ 1 icon tròn đơn sắc thông thường. */}
+      <div className="relative mb-1 flex h-20 w-20 items-center justify-center">
+        <div className="absolute inset-0 rounded-2xl border-2 border-dashed border-slate-200" />
+        <div className="absolute inset-3 rounded-xl bg-slate-50" />
+        <div className="relative flex h-10 w-10 items-center justify-center rounded-full bg-white shadow-card">
+          <Icon size={18} className="text-indigo-400" />
+        </div>
       </div>
       <p className="text-sm font-semibold text-slate-700">{title}</p>
       {description && <p className="max-w-sm text-xs text-slate-400">{description}</p>}
-      {action && <div className="mt-2">{action}</div>}
+      {action && <div className="mt-1">{action}</div>}
     </div>
   );
 }
