@@ -251,7 +251,7 @@ export default function UsersPage() {
                         onClick={() => setRolesTarget(u)}
                         title="Xem vai trò duyệt"
                         type="button"
-                        className="rounded-md p-1.5 text-slate-400 hover:bg-slate-50 hover:text-slate-700"
+                        className="rounded-full p-1.5 text-slate-400 transition-colors duration-150 hover:bg-slate-100 hover:text-slate-700"
                       >
                         <ShieldCheck size={15} />
                       </button>
@@ -259,7 +259,7 @@ export default function UsersPage() {
                         onClick={() => setDeptTarget(u)}
                         title="Chuyển phòng ban"
                         type="button"
-                        className="rounded-md p-1.5 text-slate-400 hover:bg-slate-50 hover:text-slate-700"
+                        className="rounded-full p-1.5 text-slate-400 transition-colors duration-150 hover:bg-slate-100 hover:text-slate-700"
                       >
                         <Building2 size={15} />
                       </button>
@@ -267,7 +267,7 @@ export default function UsersPage() {
                         onClick={() => setPwdTarget(u)}
                         title="Đổi mật khẩu"
                         type="button"
-                        className="rounded-md p-1.5 text-slate-400 hover:bg-slate-50 hover:text-slate-700"
+                        className="rounded-full p-1.5 text-slate-400 transition-colors duration-150 hover:bg-slate-100 hover:text-slate-700"
                       >
                         <KeyRound size={15} />
                       </button>
@@ -275,7 +275,7 @@ export default function UsersPage() {
                         onClick={() => openEdit(u)}
                         title="Sửa"
                         type="button"
-                        className="rounded-md p-1.5 text-slate-400 hover:bg-slate-50 hover:text-slate-700"
+                        className="rounded-full p-1.5 text-slate-400 transition-colors duration-150 hover:bg-slate-100 hover:text-slate-700"
                       >
                         <Pencil size={15} />
                       </button>
@@ -283,7 +283,7 @@ export default function UsersPage() {
                         onClick={() => setDeleteTarget(u)}
                         title="Xóa"
                         type="button"
-                        className="rounded-md p-1.5 text-slate-400 hover:bg-red-50 hover:text-red-500"
+                        className="rounded-full p-1.5 text-slate-400 transition-colors duration-150 hover:bg-red-50 hover:text-red-500"
                       >
                         <Trash2 size={15} />
                       </button>

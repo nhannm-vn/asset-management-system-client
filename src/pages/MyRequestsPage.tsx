@@ -102,7 +102,7 @@ export default function MyRequestsPage() {
                       <div className="flex justify-end gap-1">
                         <button
                           onClick={() => setHistoryTarget(r)}
-                          className="rounded-md p-1.5 text-slate-400 hover:bg-slate-50 hover:text-slate-700"
+                          className="rounded-full p-1.5 text-slate-400 transition-colors duration-150 hover:bg-slate-100 hover:text-slate-700"
                           title="Lịch sử duyệt"
                           type="button"
                         >
@@ -111,7 +111,7 @@ export default function MyRequestsPage() {
                         {r.status === "PENDING" && (
                           <button
                             onClick={() => setCancelTarget(r)}
-                            className="rounded-md p-1.5 text-slate-400 hover:bg-red-50 hover:text-red-500"
+                            className="rounded-full p-1.5 text-slate-400 transition-colors duration-150 hover:bg-red-50 hover:text-red-500"
                             title="Hủy yêu cầu"
                             type="button"
                           >

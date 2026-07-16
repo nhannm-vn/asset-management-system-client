@@ -22,7 +22,7 @@ export function Topbar() {
         <button
           onClick={handleLogout}
           type="button"
-          className="flex h-9 items-center gap-1.5 rounded-lg px-3 text-sm font-medium text-slate-500 transition-colors hover:bg-red-50 hover:text-red-500"
+          className="flex h-9 items-center gap-1.5 rounded-full px-3.5 text-[14px] font-medium text-slate-500 transition-colors hover:bg-red-50 hover:text-red-500"
         >
           <LogOut size={15} />
           <span className="hidden sm:inline">Đăng xuất</span>
